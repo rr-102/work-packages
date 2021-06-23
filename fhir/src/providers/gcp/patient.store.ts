@@ -1,7 +1,7 @@
 import { Helper } from '../../common/helper';
 import { PatientDomainModel } from '../../types/domain.types/patient.domain.types';
 import { IPatientStore } from '../../interfaces/patient.store.interface';
-import { GcpStorageService as g } from './storage.service';
+import { GcpHelper } from './helper.gcp';
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -9,15 +9,17 @@ export class GcpPatientStore implements IPatientStore {
 
     create = async (model: PatientDomainModel): Promise<any> => {
         try {
+            var g = await GcpHelper.getGcpClient();
+            const c = GcpHelper.getGcpFhirConfig();
             var body = this.createPatientFhirResource(model);
-            const parent = `projects/${g.projectId}/locations/${g.cloudRegion}/datasets/${g.datasetId}/fhirStores/${g.fhirStoreId}`;
+            const parent = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}/fhirStores/${c.FhirStoreId}`;
             const request = { parent, type: 'Patient', requestBody: body };
-            const resource = await g.healthcare.projects.locations.datasets.fhirStores.fhir.create(
+            const resource = await g.projects.locations.datasets.fhirStores.fhir.create(
                 request
             );
             var data: any = resource.data;
             var resourceStr = JSON.stringify(data, null, 2);
-            console.log(`Created FHIR resource ${resourceStr}`);
+            //console.log(`Created FHIR resource ${resourceStr}`);
             return data.id;
         } catch (error) {
             console.log(error.message);
@@ -27,14 +29,16 @@ export class GcpPatientStore implements IPatientStore {
 
     getById = async (resourceId: string): Promise<any> => {
         try {
+            var g = await GcpHelper.getGcpClient();
+            const c = GcpHelper.getGcpFhirConfig();
             const resourceType = 'Patient';
-            const parent = `projects/${g.projectId}/locations/${g.cloudRegion}/datasets/${g.datasetId}/fhirStores/${g.fhirStoreId}/fhir/${resourceType}/${resourceId}`;
-            const resource = await g.healthcare.projects.locations.datasets.fhirStores.fhir.read(
+            const parent = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}/fhirStores/${c.FhirStoreId}/fhir/${resourceType}/${resourceId}`;
+            const resource = await g.projects.locations.datasets.fhirStores.fhir.read(
                 { name: parent }
             );
             var data: any = resource.data;
-            var resourceStr = JSON.stringify(data, null, 2);
-            console.log(`Created FHIR resource ${resourceStr}`);
+            //var resourceStr = JSON.stringify(data, null, 2);
+            //console.log(`Created FHIR resource ${resourceStr}`);
             return data;
         } catch (error) {
             console.log(error.message);

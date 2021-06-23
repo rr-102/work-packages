@@ -8,13 +8,14 @@ import { Injector } from './injector';
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+Injector.registerInjections(container);
+
 export class Loader {
 
     //#region static member variables
 
-    private static _storageService: StorageService = null;
-    private static _patientStore: PatientStore = null;
-    //private static _doctorVisitStore: DoctorVisitStore = null;
+    private static _storageService: StorageService = container.resolve(StorageService);
+    private static _patientStore: PatientStore = container.resolve(PatientStore);
 
     private static _container: DependencyContainer = container;
 
@@ -38,8 +39,6 @@ export class Loader {
 
     public static init = async () => {
         try {
-
-            Injector.registerInjections(container);
 
             Loader._storageService = container.resolve(StorageService);
 

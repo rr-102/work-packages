@@ -1,10 +1,4 @@
-import * as dotenv from "dotenv";
-import * as path from 'path';
 
-import { Loader } from '../../loader';
-import { Runner } from '../../runner';
-
-////////////////////////////////////////////////
 
 export default async () => {
     try {
@@ -14,3 +8,4 @@ export default async () => {
         console.log('Problem in tearing down the tests! -> ' + error.message);
     }
 };
+
