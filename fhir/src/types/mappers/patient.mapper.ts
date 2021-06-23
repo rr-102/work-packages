@@ -1,9 +1,42 @@
 
-import { PatientDetailsDto, PatientDomainModel, PatientDto } from "../domain.types/patient.domain.types";
+// import { PatientDomainModel } from "../domain.types/patient.domain.types";
+
+import { Helper } from "../../common/helper";
+import { AddressDomainModel } from "../domain.types/address.domain.types";
+import { PatientDomainModel } from "../domain.types/patient.domain.types";
 
 ///////////////////////////////////////////////////////////////////////////////////
 
 export class PatientMapper {
+
+    public static convertJsonObjectToDomainModel = () => {
+
+        var patientObj = Helper.readJsonResource('patient.domain.model.json');
+
+        var address: AddressDomainModel = {
+            Type: patientObj.Address.Type != null ? patientObj.Address.Type.toLowerCase() : 'official',
+            AddressLine: patientObj.Address.AddressLine ?? '',
+            City: patientObj.Address.City ?? '',
+            District: patientObj.Address.District ?? '',
+            State: patientObj.Address.State ?? '',
+            Country: patientObj.Address.Country ?? '',
+            PostalCode: patientObj.Address.PostalCode ?? ''
+        };
+
+        var model: PatientDomainModel = {
+            Prefix: patientObj.Prefix,
+            FirstName: patientObj.FirstName,
+            MiddleName: patientObj.MiddleName,
+            LastName: patientObj.LastName,
+            Phone: patientObj.Phone,
+            Email: patientObj.Email,
+            Gender: patientObj.Gender,
+            BirthDate: patientObj.BirthDate,
+            Address: address
+        }
+
+        return model;
+    }
 
     // static toDetailsDto = async (patient: Patient): Promise<PatientDetailsDto> => {
 

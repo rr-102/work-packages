@@ -1,3 +1,4 @@
+import * as path from 'path';
 import * as fs from 'fs';
 import child_process from 'child_process';
 import { Gender } from './system.types';
@@ -167,5 +168,24 @@ export class Helper {
             return null;
         }
         return val;
+    }
+
+    static readJsonResource = (filename) => {
+        const jsonPath = path.join(
+            process.cwd(),
+            '/data/',
+            filename
+        );
+        if (!fs.existsSync(jsonPath)) {
+            return null;
+        }
+
+        const rawdata = fs.readFileSync(jsonPath, {
+            encoding: 'utf8',
+            flag: 'r',
+        });
+
+        const obj = JSON.parse(rawdata);
+        return obj;
     }
 }

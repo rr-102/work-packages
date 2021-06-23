@@ -1,111 +1,40 @@
+import { healthcare_v1 } from 'googleapis';
 import { IStorageService } from '../../interfaces/storage.service.interface';
-import { google, healthcare_v1 } from 'googleapis';
+import { GcpHelper } from './helper.gcp';
 
-const healthcare = google.healthcare({
-    version: 'v1',
-    headers: {'Content-Type': 'application/fhir+json'}
-});
 ////////////////////////////////////////////////////////////////////////////////
 
 export class GcpStorageService implements IStorageService {
 
-    //#region gcp fhir parameters
-
-    static _projectId: string = null;
-    static _cloudRegion: string = null;
-    static _datasetId: string = null;
-    static _fhirStoreId: string = null;
-    static _dicomStoreId: string = null
-    static _fhirVersion: string = null;
-
-    static _defaultDataset: healthcare_v1.Schema$Dataset = null;
-    static _defaultFhirStore: healthcare_v1.Schema$FhirStore = null;
-    static _defaultDicomStore: healthcare_v1.Schema$DicomStore = null;
-
-    static _healthcare: healthcare_v1.Healthcare = null;
-
-    //#endregion
-
-    //#region properties
-
-    public static get projectId(): string {
-        return GcpStorageService._projectId;
-    }
-
-    public static get cloudRegion(): string {
-        return GcpStorageService._cloudRegion;
-    }
-
-    public static get datasetId(): string {
-        return GcpStorageService._datasetId;
-    }
-
-    public static get fhirStoreId(): string {
-        return GcpStorageService._fhirStoreId;
-    }
-
-    public static get dicomStoreId(): string {
-        return GcpStorageService._dicomStoreId;
-    }
-
-    public static get defaultDataset(): healthcare_v1.Schema$Dataset {
-        return GcpStorageService._defaultDataset;
-    }
-
-    public static get defaultFhirStore(): healthcare_v1.Schema$FhirStore {
-        return GcpStorageService._defaultFhirStore;
-    }
-    
-    public static get defaultDicomStore(): healthcare_v1.Schema$DicomStore {
-        return GcpStorageService._defaultDicomStore;
-    }
-    
-    public static get fhirVersion(): string {
-        return GcpStorageService._fhirVersion;
-    }
-
-    public static get healthcare(): healthcare_v1.Healthcare {
-        return GcpStorageService._healthcare;
-    }
-
-    //#endregion
 
     //#region public methods
 
     public init = async (): Promise<boolean> => {
         try {
 
-            //Initialize with env variables
-            GcpStorageService._projectId = process.env.GCP_PROJECT_ID;
-            GcpStorageService._cloudRegion = process.env.GCP_FHIR_CLOUD_REGION;
-            GcpStorageService._datasetId = process.env.GCP_FHIR_DATASET_ID;
-            GcpStorageService._fhirStoreId = process.env.GCP_FHIR_STORE_NAME;
-            GcpStorageService._dicomStoreId = process.env.GCP_DICOM_STORE_NAME;
-            GcpStorageService._fhirVersion = process.env.GCP_FHIR_CURRENT_VERSION;
-        
-            await this.setClientAuth();
-            GcpStorageService._healthcare = healthcare;
-
             var datasets = await this.getDatasetList();
-            GcpStorageService._defaultDataset = this.findDefaultDataset(datasets);
-            if (GcpStorageService._defaultDataset == null) {
-                GcpStorageService._defaultDataset = await this.createDataset();
+            var defaultDataset = this.findDefaultDataset(datasets);
+            if (defaultDataset == null) {
+                defaultDataset = await this.createDataset();
             }
+            console.log('Verified default dataset...');
 
             var fhirStores = await this.getFhirStoreList();
-            GcpStorageService._defaultFhirStore = this.findDefaultFhirStore(fhirStores);
-            if (GcpStorageService._defaultFhirStore == null) {
-                GcpStorageService._defaultFhirStore = await this.createFhirStore();
+            var defaultFhirStore = this.findDefaultFhirStore(fhirStores);
+            if (defaultFhirStore == null) {
+                defaultFhirStore = await this.createFhirStore();
             }
+            console.log('Verified default fhir-store...');
 
             var dicomStores = await this.getDicomStoreList();
-            GcpStorageService._defaultDicomStore = this.findDefaultDicomStore(dicomStores);
-            if (GcpStorageService._defaultDicomStore == null) {
-                GcpStorageService._defaultDicomStore = await this.createDicomStore();
+            var defaultDicomStore = this.findDefaultDicomStore(dicomStores);
+            if (defaultDicomStore == null) {
+                defaultDicomStore = await this.createDicomStore();
             }
+            console.log('Verified default dicom-store...');
 
-            var metadata = await this.getDefaultFhirStoreMetadata();
-            console.log(JSON.stringify(metadata, null, 2));
+            //var metadata = await this.getDefaultFhirStoreMetadata();
+            //console.log(JSON.stringify(metadata, null, 2));
 
             return true;
 
@@ -121,38 +50,32 @@ export class GcpStorageService implements IStorageService {
 
     //#region Private methods
 
-    private setClientAuth = async () => {
-        const auth = await google.auth.getClient({
-            scopes: ['https://www.googleapis.com/auth/cloud-platform'],
-        });
-        google.options({ auth });
-    };
-
     private createDataset = async () => {
 
-        var parent = `projects/${GcpStorageService._projectId}/locations/${GcpStorageService._cloudRegion}`;
-
-        var datasetId: string = GcpStorageService._datasetId;
+        var g = await GcpHelper.getGcpClient();
+        const c = GcpHelper.getGcpFhirConfig();
+        var parent = `projects/${c.ProjectId}/locations/${c.CloudRegion}`;
+        var datasetId: string = c.DatasetId;
         var create_dataset_request = { parent, datasetId };
-        await GcpStorageService.healthcare.projects.locations.datasets.create(
+        await g.projects.locations.datasets.create(
             create_dataset_request
         );
-        parent = `projects/${GcpStorageService._projectId}/locations/${GcpStorageService._cloudRegion}/datasets/${GcpStorageService._datasetId}`;
+        parent = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}`;
         var get_dataset_request = { name: parent };
-        const dataset = await GcpStorageService.healthcare.projects.locations.datasets.get(
+        const dataset = await g.projects.locations.datasets.get(
             get_dataset_request
         );
-        console.log(dataset.data);
+        //console.log(dataset.data);
         return dataset.data;
     };
 
     private createFhirStore = async () => {
         try {
-            
-            var parent = `projects/${GcpStorageService._projectId}/locations/${GcpStorageService._cloudRegion}/datasets/${GcpStorageService._datasetId}`;
-
-            var fhirStoreId: string = GcpStorageService._fhirStoreId;
-            var version: string = GcpStorageService._fhirVersion;
+            var g = await GcpHelper.getGcpClient();
+            const c = GcpHelper.getGcpFhirConfig();
+            var parent = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}`;
+            var fhirStoreId: string = c.FhirStoreId;
+            var version: string = c.FhirVersion;
             var create_store_request = {
                 parent,
                 fhirStoreId,
@@ -160,16 +83,16 @@ export class GcpStorageService implements IStorageService {
                     version,
                 },
             };
-            await GcpStorageService.healthcare.projects.locations.datasets.fhirStores.create(
+            await g.projects.locations.datasets.fhirStores.create(
                 create_store_request
             );
 
-            parent = `projects/${GcpStorageService._projectId}/locations/${GcpStorageService._cloudRegion}/datasets/${GcpStorageService._datasetId}/fhirStores/${GcpStorageService._fhirStoreId}`;
+            parent = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}/fhirStores/${c.FhirStoreId}`;
             var request = { name: parent };
-            const store = await GcpStorageService.healthcare.projects.locations.datasets.fhirStores.get(
+            const store = await g.projects.locations.datasets.fhirStores.get(
                 request
             );
-            console.log(store.data);
+            //console.log(store.data);
             return store.data;
         } catch (error) {
             throw error;
@@ -178,24 +101,24 @@ export class GcpStorageService implements IStorageService {
 
     private createDicomStore = async () => {
         try {
-            
-            var parent = `projects/${GcpStorageService._projectId}/locations/${GcpStorageService._cloudRegion}/datasets/${GcpStorageService._datasetId}`;
-
-            var dicomStoreId: string = GcpStorageService._dicomStoreId;
+            var g = await GcpHelper.getGcpClient();
+            const c = GcpHelper.getGcpFhirConfig();
+            var parent = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}`;
+            var dicomStoreId: string = c.DicomStoreId;
             var create_store_request = {
                 parent,
                 dicomStoreId
             };
-            await GcpStorageService.healthcare.projects.locations.datasets.dicomStores.create(
+            await g.projects.locations.datasets.dicomStores.create(
                 create_store_request
             );
 
-            parent = `projects/${GcpStorageService._projectId}/locations/${GcpStorageService._cloudRegion}/datasets/${GcpStorageService._datasetId}/dicomStores/${GcpStorageService._dicomStoreId}`;
+            parent = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}/dicomStores/${c.DicomStoreId}`;
             var request = { name: parent };
-            const store = await GcpStorageService.healthcare.projects.locations.datasets.dicomStores.get(
+            const store = await g.projects.locations.datasets.dicomStores.get(
                 request
             );
-            console.log(store.data);
+            //console.log(store.data);
             return store.data;
         } catch (error) {
             throw error;
@@ -204,13 +127,14 @@ export class GcpStorageService implements IStorageService {
 
     private getDefaultDataset = async () => {
         try {
-            
-            const parent = `projects/${GcpStorageService._projectId}/locations/${GcpStorageService._cloudRegion}/datasets/${GcpStorageService._datasetId}`;
+            var g = await GcpHelper.getGcpClient();
+            const c = GcpHelper.getGcpFhirConfig();
+            const parent = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}`;
             const request = { name: parent };
-            const dataset = await GcpStorageService.healthcare.projects.locations.datasets.get(
+            const dataset = await g.projects.locations.datasets.get(
                 request
             );
-            console.log(dataset.data);
+            //console.log(dataset.data);
             return dataset.data;
         } catch (error) {
             console.log(error.message);
@@ -219,33 +143,37 @@ export class GcpStorageService implements IStorageService {
     };
 
     private getDefaultFhirStore = async () => {
-        
-        var parent = `projects/${GcpStorageService._projectId}/locations/${GcpStorageService._cloudRegion}/datasets/${GcpStorageService._datasetId}/fhirStores/${GcpStorageService._fhirStoreId}`;
-        const store = await GcpStorageService.healthcare.projects.locations.datasets.fhirStores.get(
+        var g = await GcpHelper.getGcpClient();
+        const c = GcpHelper.getGcpFhirConfig();
+        var parent = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}/fhirStores/${c.FhirStoreId}`;
+        const store = await g.projects.locations.datasets.fhirStores.get(
             { name: parent }
         );
-        console.log(store.data);
+        //console.log(store.data);
         return store.data;
     };
 
     private getDefaultDicomStore = async () => {
-        
-        var parent = `projects/${GcpStorageService._projectId}/locations/${GcpStorageService._cloudRegion}/datasets/${GcpStorageService._datasetId}/dicomStores/${GcpStorageService._dicomStoreId}`;
-        const store = await GcpStorageService.healthcare.projects.locations.datasets.dicomStores.get(
+        var g = await GcpHelper.getGcpClient();
+        const c = GcpHelper.getGcpFhirConfig();
+        var parent = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}/dicomStores/${c.DicomStoreId}`;
+        const store = await g.projects.locations.datasets.dicomStores.get(
             { name: parent }
         );
-        console.log(store.data);
+        //console.log(store.data);
         return store.data;
     };
 
     private getDatasetList = async () => {
         try {
-            const parent = `projects/${GcpStorageService._projectId}/locations/${GcpStorageService._cloudRegion}`;
+            var g = await GcpHelper.getGcpClient();
+            const c = GcpHelper.getGcpFhirConfig();
+            const parent = `projects/${c.ProjectId}/locations/${c.CloudRegion}`;
             const request = { parent };
-            const datasets = await GcpStorageService.healthcare.projects.locations.datasets.list(
+            const datasets = await g.projects.locations.datasets.list(
                 request
             );
-            console.log(datasets);
+            //console.log(datasets);
             return datasets;
         } catch (error) {
             console.log(error.message);
@@ -255,12 +183,14 @@ export class GcpStorageService implements IStorageService {
 
     private getFhirStoreList = async () => {
         try {
-            const parent = `projects/${GcpStorageService._projectId}/locations/${GcpStorageService._cloudRegion}/datasets/${GcpStorageService._datasetId}`;
+            var g = await GcpHelper.getGcpClient();
+            const c = GcpHelper.getGcpFhirConfig();
+            const parent = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}`;
             const request = { parent };
-            const stores = await GcpStorageService.healthcare.projects.locations.datasets.fhirStores.list(
+            const stores = await g.projects.locations.datasets.fhirStores.list(
                 request
             );
-            console.log(stores);
+            //console.log(stores);
             return stores;
         } catch (error) {
             console.log(error.message);
@@ -270,12 +200,14 @@ export class GcpStorageService implements IStorageService {
 
     private getDicomStoreList = async () => {
         try {
-            const parent = `projects/${GcpStorageService._projectId}/locations/${GcpStorageService._cloudRegion}/datasets/${GcpStorageService._datasetId}`;
+            var g = await GcpHelper.getGcpClient();
+            const c = GcpHelper.getGcpFhirConfig();
+            const parent = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}`;
             const request = { parent };
-            const stores = await GcpStorageService.healthcare.projects.locations.datasets.dicomStores.list(
+            const stores = await g.projects.locations.datasets.dicomStores.list(
                 request
             );
-            console.log(stores);
+            //console.log(stores);
             return stores;
         } catch (error) {
             console.log(error.message);
@@ -284,7 +216,8 @@ export class GcpStorageService implements IStorageService {
     };
 
     private findDefaultDataset = (datasets) => {
-        const datasetPath = `projects/${GcpStorageService._projectId}/locations/${GcpStorageService._cloudRegion}/datasets/${GcpStorageService._datasetId}`;
+        const c = GcpHelper.getGcpFhirConfig();
+        const datasetPath = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}`;
         if (datasets.data.datasets && datasets.data.datasets.length > 0) {
             for (var d of datasets.data.datasets) {
                 if (d.name === datasetPath) {
@@ -296,7 +229,8 @@ export class GcpStorageService implements IStorageService {
     };
 
     private findDefaultFhirStore = (stores) => {
-        const storePath = `projects/${GcpStorageService._projectId}/locations/${GcpStorageService._cloudRegion}/datasets/${GcpStorageService._datasetId}/fhirStores/${GcpStorageService._fhirStoreId}`;
+        const c = GcpHelper.getGcpFhirConfig();
+        const storePath = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}/fhirStores/${c.FhirStoreId}`;
         if (stores.data.fhirStores && stores.data.fhirStores.length > 0) {
             for (var s of stores.data.fhirStores) {
                 if (s.name === storePath) {
@@ -308,7 +242,8 @@ export class GcpStorageService implements IStorageService {
     };
 
     private findDefaultDicomStore = (stores) => {
-        const storePath = `projects/${GcpStorageService._projectId}/locations/${GcpStorageService._cloudRegion}/datasets/${GcpStorageService._datasetId}/dicomStores/${GcpStorageService._dicomStoreId}`;
+        const c = GcpHelper.getGcpFhirConfig();
+        const storePath = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}/dicomStores/${c.DicomStoreId}`;
         if (stores.data.dicomStores && stores.data.dicomStores.length > 0) {
             for (var s of stores.data.dicomStores) {
                 if (s.name === storePath) {
@@ -320,13 +255,15 @@ export class GcpStorageService implements IStorageService {
     };
 
     private getDefaultFhirStoreMetadata = async () => {
-        const name = `projects/${GcpStorageService._projectId}/locations/${GcpStorageService._cloudRegion}/datasets/${GcpStorageService._datasetId}/fhirStores/${GcpStorageService._fhirStoreId}/fhir/metadata`;
+        var g = await GcpHelper.getGcpClient();
+        const c = GcpHelper.getGcpFhirConfig();
+        const name = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}/fhirStores/${c.FhirStoreId}/fhir/metadata`;
         const request = { name };
         const fhirStore =
-            await GcpStorageService.healthcare.projects.locations.datasets.fhirStores.get(
+            await g.projects.locations.datasets.fhirStores.get(
                 request
             );
-        console.log(JSON.stringify(fhirStore.data, null, 2));
+        //console.log(JSON.stringify(fhirStore.data, null, 2));
         return fhirStore.data;
     }
 
