@@ -31,4 +31,4 @@ describe('Doctor resource: Storage, retrieval', () => {
         var extractedEmail = emailElement ? emailElement.value : '';
         expect(extractedEmail.toLowerCase()).toEqual(model.Email.toLowerCase());
     });
-});
+}); 
