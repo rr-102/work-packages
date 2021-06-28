@@ -30,4 +30,4 @@ export class PatientStore {
         return await this._service.delete(id);
     }
 
-}
+} 
