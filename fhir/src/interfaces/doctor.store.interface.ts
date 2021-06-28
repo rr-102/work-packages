@@ -9,4 +9,4 @@ export interface IDoctorStore {
     getById(id: string): Promise<any>;
     update(id: string, updates: DoctorDomainModel): Promise<any>;
     delete(id: string): Promise<any>;
-} 
+}
