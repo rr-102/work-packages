@@ -1,6 +1,5 @@
 {
     "resourceType": "Practitioner",
-    "id": "doctorFhirId",
     "identifier": [
         {
             "use": "official",
