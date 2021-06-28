@@ -1,0 +1,66 @@
+{
+    "resourceType": "Practitioner",
+    "identifier": [
+        {
+            "use": "official",
+            "value": "official_value"
+        },
+        {
+            "use": "usual",
+            "value": "usual_value"
+        }
+    ],
+    "name": [
+        {
+            "use": "official",
+            "given": ["pharmacy_practitioner_first_name", "pharmacy_practitioner_middle_name"],
+            "family": "pharmacy_practitioner_last_name",
+            "prefix": ["pharmacy_practitioner_prefix"]
+            
+        }
+    ],
+    "gender": "unknown",
+    "birthDate": "1234-12-12",
+    "telecom": [
+        {
+            "system": "phone",
+            "use": "work",
+            "value": "pharmacy_practitioner_phone_number"
+        },
+        {
+            "system": "email",
+            "use": "work",
+            "value": "pharmacy_practitioner_email"
+        },
+        {
+            "system": "fax",
+            "use": "work",
+            "value": "pharmacy_practitioner_fax_number"
+        }
+    ],
+    "address": [
+        {
+            "use": "work",
+            "line": [
+                "pharmacy_practitioner_address_first_line",
+                "pharmacy_practitioner_address_second_line"
+            ],
+            "city": "pharmacy_practitioner_address_city",
+            "district": "pharmacy_practitioner_address_district",
+            "postalCode": "pharmacy_practitioner_address_postal_code"
+        }
+    ],
+    "qualification": [
+        {
+            "code": {
+                "coding": [
+                    {
+                        "system": "pharmacy_practitioner_system",
+                        "code": "pharmacy_practitioner_code",
+                        "display": "pharmacy_practitioner_code_display"
+                    }
+                ]
+            }
+        }
+    ]
+} 
