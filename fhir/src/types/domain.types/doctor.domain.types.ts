@@ -1,24 +1,56 @@
+import { Gender } from '../../common/system.types';
 import { AddressDomainModel } from './address.domain.types';
-import { AppointmentProvisionDomainModel } from './appointment.domain.types';
-import { OrganizationDomainModel } from './organization.domain.model';
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+//#region Domain models
 
 export interface DoctorDomainModel {
-    Prefix?: string;
+    id?: string;
+    UserId?: string;
+    DisplayId?: string,
+    EhrId?: string;
+    NationalHealthId?:string;
+    MedicalProfileId?: string;
+
+    DisplayName?: string;
     FirstName?: string;
+    MiddleName?: string;
     LastName?: string;
-    Phone: string;
+    Prefix?: string;
+    Phone?: string;
     Email?: string;
-    Gender?: string;
-    BirthDate?: string;
-    ImageURL?: string;
-    EstablishmentName?: string;
-    Qualification?: string;
-    Specialities?: string;
-    AboutMe?: string;
-    ProfessionalHighlights?: string;
-    PractisingSince?: string;
-    Locality?: string;
-    Organizations?: OrganizationDomainModel[];
+    Gender?: Gender;
+    BirthDate?: Date;
+    ActiveSince?: Date;
+    ImageResourceId?:string;
+    DefaultTimeZone?:string;
+    CurrentTimeZone?:string;
+        
+    InsuranceIds?: string[];
+    EmergencyContactIds?: string[];
+
     Address?: AddressDomainModel;
-    AppointmentDetails?: AppointmentProvisionDomainModel;
-}
+};
+
+//#endregion
+
+
+//#region  Search filters
+
+export interface DoctorSearchFilters {
+    Phone: string;
+    Email: string;
+    Name: string;
+    Gender: Gender;
+    BirthdateFrom: Date;
+    BirthdateTo: Date;
+    CreatedDateFrom: Date;
+    CreatedDateTo: Date;
+    OrderBy: string;
+    Order: string;
+    PageIndex: number;
+    ItemsPerPage: number;
+};
+
+//#endregion
