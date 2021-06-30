@@ -13,9 +13,9 @@
     "name": [
         {
             "use": "official",
-            "given": ["pharmacy_practitioner_first_name", "pharmacy_practitioner_middle_name"],
-            "family": "pharmacy_practitioner_last_name",
-            "prefix": ["pharmacy_practitioner_prefix"]
+            "given": ["pharmacist_first_name", "pharmacist_middle_name"],
+            "family": "pharmacist_last_name",
+            "prefix": ["pharmacist_prefix"]
             
         }
     ],
@@ -25,29 +25,29 @@
         {
             "system": "phone",
             "use": "work",
-            "value": "pharmacy_practitioner_phone_number"
+            "value": "pharmacist_phone_number"
         },
         {
             "system": "email",
             "use": "work",
-            "value": "pharmacy_practitioner_email"
+            "value": "pharmacist_email"
         },
         {
             "system": "fax",
             "use": "work",
-            "value": "pharmacy_practitioner_fax_number"
+            "value": "pharmacist_fax_number"
         }
     ],
     "address": [
         {
             "use": "work",
             "line": [
-                "pharmacy_practitioner_address_first_line",
-                "pharmacy_practitioner_address_second_line"
+                "pharmacist_address_first_line",
+                "pharmacist_address_second_line"
             ],
-            "city": "pharmacy_practitioner_address_city",
-            "district": "pharmacy_practitioner_address_district",
-            "postalCode": "pharmacy_practitioner_address_postal_code"
+            "city": "pharmacist_address_city",
+            "district": "pharmacist_address_district",
+            "postalCode": "pharmacist_address_postal_code"
         }
     ],
     "qualification": [
@@ -55,9 +55,9 @@
             "code": {
                 "coding": [
                     {
-                        "system": "pharmacy_practitioner_system",
-                        "code": "pharmacy_practitioner_code",
-                        "display": "pharmacy_practitioner_code_display"
+                        "system": "pharmacist_system",
+                        "code": "pharmacist_code",
+                        "display": "pharmacist_code_display"
                     }
                 ]
             }
