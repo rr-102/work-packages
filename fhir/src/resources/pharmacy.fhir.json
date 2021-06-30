@@ -1,0 +1,75 @@
+{
+    "resourceType": "Organization",
+    "identifier": [
+        {
+            "use": "official",
+            "system": "official_system",
+            "value": "official_value"
+        },
+        {
+            "use": "usual",
+            "system": "usual_system",
+            "value": "usual_value"
+        }
+    ],
+    "type": [
+        {
+            "coding": [
+                {
+                    "system": "pharmacy_system",
+                    "code": "pharmacy_code",
+                    "display": "pharmacy_code_display"
+                }
+            ]
+        }
+    ],
+    "name": "pharmacy_name",
+    "telecom": [
+        {
+            "system": "phone",
+            "value": "pharmacy_phone_number",
+            "use": "work"
+        },
+        {
+            "system": "fax",
+            "value": "pharmacy_fax_number",
+            "use": "work"
+        },
+        {
+            "system": "email",
+            "value": "pharmacy_email",
+            "use": "work"
+        }
+    ],
+    "address": [
+        {
+            "use": "work",
+            "line": [
+                "pharmacy_address_first_line",
+                "pharmacy_address_second_line"
+            ],
+            "city": "pharmacy_address_city",
+            "district": "pharmacy_address_district",
+            "postalCode": "pharmacy_address_postal_code",
+            "country": "pharmacy_address_country"
+        }
+    ],
+    "contact": [
+        {
+            "purpose": {
+                "coding": [
+                    {
+                        "system": "pharmacy_contact_system",
+                        "code": "pharmacy_contact_code"
+                    }
+                ]
+            },
+            "telecom": [
+                {
+                    "system": "phone",
+                    "value": "pharmacy_contact_phone_number"
+                }
+            ]
+        }
+    ]
+}
