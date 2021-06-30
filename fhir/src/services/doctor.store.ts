@@ -6,7 +6,7 @@ import { DoctorDomainModel, DoctorSearchFilters } from '../types/domain.types/do
 ///////////////////////////////////////////////////////////////////
 
 @injectable()
-export class PatientStore {
+export class DoctorStore {
 
     constructor(@inject('IDoctorStore') private _service: IDoctorStore) {}
 
