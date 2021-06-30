@@ -25,9 +25,9 @@ export class DoctorMapper {
 
         var model: DoctorDomainModel = {
             FirstName: doctorObj.FirstName,
-            //MiddleName: doctorObj.MiddleName, -- not sure if required
+            MiddleName: doctorObj.MiddleName,
             LastName: doctorObj.LastName,
-            //Suffix: doctorObj.Suffix,  --not sure if required
+            Prefix: doctorObj.Prefix,
             Phone: doctorObj.Phone,
             Email: doctorObj.Email,
             Gender: doctorObj.Gender,
