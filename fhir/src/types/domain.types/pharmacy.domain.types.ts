@@ -9,3 +9,7 @@ export interface PharmacyDomainModel {
     OperationalSince?: string;
     Address?: AddressDomainModel;
 }
+
+export interface PharmacySearchFilters {
+
+};
