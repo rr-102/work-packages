@@ -8,4 +8,8 @@ export interface HospitalDomainModel {
     AboutUs?: string;
     OperationalSince?: string;
     Address?: AddressDomainModel;
-}
+};
+
+export interface HospitalSearchFilters {
+
+};
