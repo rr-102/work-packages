@@ -1,0 +1,75 @@
+{
+    "resourceType": "Organization",
+    "identifier": [
+        {
+            "use": "official",
+            "system": "official_system",
+            "value": "official_value"
+        },
+        {
+            "use": "usual",
+            "system": "usual_system",
+            "value": "usual_value"
+        }
+    ],
+    "type": [
+        {
+            "coding": [
+                {
+                    "system": "hospital_system",
+                    "code": "hospital_code",
+                    "display": "hospital_code_display"
+                }
+            ]
+        }
+    ],
+    "name": "hospital_name",
+    "telecom": [
+        {
+            "system": "phone",
+            "value": "hospital_phone_number",
+            "use": "work"
+        },
+        {
+            "system": "fax",
+            "value": "hospital_fax_number",
+            "use": "work"
+        },
+        {
+            "system": "email",
+            "value": "hospital_email",
+            "use": "work"
+        }
+    ],
+    "address": [
+        {
+            "use": "work",
+            "line": [
+                "hospital_address_first_line",
+                "hospital_address_second_line"
+            ],
+            "city": "hospital_address_city",
+            "district": "hospital_address_district",
+            "postalCode": "hospital_address_postal_code",
+            "country": "hospital_address_country"
+        }
+    ],
+    "contact": [
+        {
+            "purpose": {
+                "coding": [
+                    {
+                        "system": "hospital_contact_system",
+                        "code": "hospital_contact_code"
+                    }
+                ]
+            },
+            "telecom": [
+                {
+                    "system": "phone",
+                    "value": "hospital_contact_phone_number"
+                }
+            ]
+        }
+    ]
+}
