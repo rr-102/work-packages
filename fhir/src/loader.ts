@@ -17,7 +17,7 @@ export class Loader {
 
     private static _storageService: StorageService = container.resolve(StorageService);
     private static _patientStore: PatientStore = container.resolve(PatientStore);
-    private static _pharmacyStore: PharmacyStore = container.resolve(PatientStore);
+    private static _pharmacyStore: PharmacyStore = container.resolve(PharmacyStore);
 
     private static _container: DependencyContainer = container;
 
