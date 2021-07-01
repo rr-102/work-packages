@@ -3,6 +3,7 @@ import { container, DependencyContainer } from 'tsyringe';
 
 import { StorageService } from './services/storage.service';
 import { PatientStore } from './services/patient.store';
+import { HospitalStore } from './services/hospital.store';
 //import { DoctorVisitStore } from './services/doctor.visit.store';
 import { Injector } from './injector';
 
@@ -16,6 +17,7 @@ export class Loader {
 
     private static _storageService: StorageService = container.resolve(StorageService);
     private static _patientStore: PatientStore = container.resolve(PatientStore);
+    private static _hospitalStore: HospitalStore = container.resolve(HospitalStore);
 
     private static _container: DependencyContainer = container;
 
@@ -29,6 +31,10 @@ export class Loader {
     
     public static get PatientStore() {
         return Loader._patientStore;
+    }
+
+    public static get HospitalStore() {
+        return Loader._hospitalStore;
     }
 
     // public static get DoctorVisitStore() {
@@ -45,6 +51,8 @@ export class Loader {
             //Add other resource stores here...
             Loader._patientStore = container.resolve(PatientStore);
             //Loader._doctorVisitStore = container.resolve(DoctorVisitStore);
+
+            Loader._hospitalStore = container.resolve(HospitalStore);
 
             //Finally intitialize Fhir storage provider 
             await Loader._storageService.init();
