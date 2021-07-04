@@ -1,0 +1,46 @@
+{
+    "resourceType": "Organization",
+
+     
+    "id": "1313222xyz",
+    "type": [{"text": "pathology"}],
+
+    
+    "identifier": [{
+      "use": "official",
+      "system": "https://www.medplusmart.com/pharmaHome",
+      "value": "Pathology_Lab",
+      "assigner": {"display" : "Ayurvedic Medicine Available,Health Accessories,Personal Care Products,Protein & Vitamins Supplements,Surgical Products,Patanjali Products Available,Allopathic Medicine Available,Processed Food & Beverages,Life Saving Drugs,Homeopathic Medicine Available"}
+
+    }],
+    
+    "name": "MedPlus Pharmacy",
+    "active": true,
+
+    
+    "telecom": [
+      {
+        "system": "phone",
+        "value": "lab_organisation_phone_number",
+        "use": "work"
+      },
+      {
+        "system": "email",
+        "value": "lab_organisation_email",
+        "use": "work"
+      }
+    ],
+    "address": [
+      {
+        "line": ["lab_organisation_first_line",
+          "lab_organisation_second_line"],
+          "city": "Pune",
+          "state": "lab_organisation_state",
+          "postalCode": "lab_organisation_postalcode",
+          "period": {
+            "start": "2010-06-10T00:00:00.000Z"
+          }
+
+      }
+    ]
+  }
