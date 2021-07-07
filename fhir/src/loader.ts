@@ -3,6 +3,7 @@ import { container, DependencyContainer } from 'tsyringe';
 
 import { StorageService } from './services/storage.service';
 import { PatientStore } from './services/patient.store';
+import { DiagnosticLabUserStore } from './services/diagnostic.lab.user.store';
 import { DoctorStore } from './services/doctor.store';
 import { PharmacistStore } from './services/pharmacist.store';
 //import { DoctorVisitStore } from './services/doctor.visit.store';
@@ -18,6 +19,7 @@ export class Loader {
 
     private static _storageService: StorageService = container.resolve(StorageService);
     private static _patientStore: PatientStore = container.resolve(PatientStore);
+    private static _diagnosticlabuserStore: DiagnosticLabUserStore = container.resolve(DiagnosticLabUserStore);
     private static _doctorStore: DoctorStore = container.resolve(DoctorStore);
     private static _pharmacistStore: PharmacistStore = container.resolve(PharmacistStore);
 
@@ -33,6 +35,9 @@ export class Loader {
     
     public static get PatientStore() {
         return Loader._patientStore;
+    }
+    public static get DiagnosticLabUserStore() {
+        return Loader._diagnosticlabuserStore;
     }
 
     public static get DoctorStore() {
@@ -56,6 +61,8 @@ export class Loader {
 
             //Add other resource stores here...
             Loader._patientStore = container.resolve(PatientStore);
+
+            Loader._diagnosticlabuserStore = container.resolve(DiagnosticLabUserStore);
             //Loader._doctorVisitStore = container.resolve(DoctorVisitStore);
 
             Loader._doctorStore = container.resolve(DoctorStore);

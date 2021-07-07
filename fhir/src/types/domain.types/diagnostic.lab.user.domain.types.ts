@@ -3,6 +3,7 @@ import { AppointmentProvisionDomainModel } from "./appointment.domain.types";
 import { OrganizationDomainModel } from "./organization.domain.model";
 
 export interface DiagnosticLabUserDomainModel {
+    MiddleName?: any;
     id?: string;
     Prefix?: string;
     FirstName?: string;
