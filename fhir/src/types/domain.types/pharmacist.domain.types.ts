@@ -5,7 +5,7 @@ import { AddressDomainModel } from './address.domain.types';
 
 //#region Domain models
 
-export interface DoctorDomainModel {
+export interface PharmacistDomainModel {
     id?: string;
     UserId?: string;
     DisplayId?: string,
@@ -38,7 +38,7 @@ export interface DoctorDomainModel {
 
 //#region  Search filters
 
-export interface DoctorSearchFilters {
+export interface PharmacistSearchFilters {
     Phone: string;
     Email: string;
     Name: string;
