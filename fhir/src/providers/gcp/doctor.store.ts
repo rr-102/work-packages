@@ -13,7 +13,7 @@ export class GcpDoctorStore implements IDoctorStore {
             const c = GcpHelper.getGcpFhirConfig();
             var body = this.createDoctorFhirResource(model);
             const parent = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}/fhirStores/${c.FhirStoreId}`;
-            const request = { parent, type: 'Doctor', requestBody: body };
+            const request = { parent, type: 'Practitioner', requestBody: body };
             const resource = await g.projects.locations.datasets.fhirStores.fhir.create(
                 request
             );
@@ -22,7 +22,7 @@ export class GcpDoctorStore implements IDoctorStore {
             //console.log(`Created FHIR resource ${resourceStr}`);
             return data.id;
         } catch (error) {
-            console.log(error.message);
+            console.log("Error:: ", JSON.stringify(error));
             throw error;
         }
     };
@@ -31,7 +31,7 @@ export class GcpDoctorStore implements IDoctorStore {
         try {
             var g = await GcpHelper.getGcpClient();
             const c = GcpHelper.getGcpFhirConfig();
-            const resourceType = 'Doctor';
+            const resourceType = 'Practitioner';
             const parent = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}/fhirStores/${c.FhirStoreId}/fhir/${resourceType}/${resourceId}`;
             const resource = await g.projects.locations.datasets.fhirStores.fhir.read(
                 { name: parent }
@@ -70,7 +70,7 @@ export class GcpDoctorStore implements IDoctorStore {
         }
 
         var resource = {
-            resourceType : "Doctor",
+            resourceType : "Practitioner",
             name: [
                 {
                     use: "official",

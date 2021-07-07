@@ -1,3 +1,4 @@
+import { Helper } from "../common/helper";
 import { Loader } from "../loader";
 import { DoctorMapper } from "../types/mappers/doctor.mapper";
 
@@ -14,7 +15,7 @@ describe('Doctor resource: Storage, retrieval', () => {
         expect(extractedName).toEqual(model.LastName);
 
         var extractedBirthdate = doctorFhirResource.birthDate;
-        expect(extractedBirthdate).toEqual(model.BirthDate);
+        expect(extractedBirthdate).toEqual(Helper.formatDate(model.BirthDate));
 
         var extractedGender = doctorFhirResource.gender;
         expect(extractedGender).toEqual(model.Gender.toLowerCase());
