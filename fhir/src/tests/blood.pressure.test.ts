@@ -8,23 +8,23 @@ describe('Observation resource: Storage, retrieval', () => {
     it('Given blood pressure domain model, store observation resource to fhir interface, then returned blood pressure details are valid.', async () => {
 
         var patientModel = PatientMapper.convertJsonObjectToDomainModel();
-        var patientFhirId = await Loader.PatientStore.create(patientModel);
+        var patientEhirId = await Loader.PatientStore.create(patientModel);
 
         var doctorModel = DoctorMapper.convertJsonObjectToDomainModel();
-        var doctorFhirId = await Loader.DoctorStore.create(doctorModel);
+        var doctorEhirId = await Loader.DoctorStore.create(doctorModel);
         
 
         var model = BloodPressureMapper.convertJsonObjectToDomainModel();
-        model.PatientId = patientFhirId;
-        model.RecordedBy = doctorFhirId;
+        model.PatientEhirId = patientEhirId;
+        model.RecordedByEhirId = doctorEhirId;
 
-        var bloodPressureFhirId = await Loader.BloodPressureStore.add(model);
-        var bloodPressureFhirResource = await Loader.BloodPressureStore.getById(bloodPressureFhirId);
+        var bloodPressureEhirId = await Loader.BloodPressureStore.add(model);
+        var bloodPressureFhirResource = await Loader.BloodPressureStore.getById(bloodPressureEhirId);
 
         //Assertions
 
-        var extractedPatientId = bloodPressureFhirResource.subject.reference.split('/')[1];
-        expect(extractedPatientId).toEqual(model.PatientId);
+        var extractedPatientEhirId = bloodPressureFhirResource.subject.reference.split('/')[1];
+        expect(extractedPatientEhirId).toEqual(model.PatientEhirId);
 
         var extractedUnit = bloodPressureFhirResource.component[0].valueQuantity.unit;
         expect(extractedUnit).toEqual(model.Unit);
@@ -32,8 +32,8 @@ describe('Observation resource: Storage, retrieval', () => {
         var extractedRecordDate = bloodPressureFhirResource.effectiveDateTime;
         expect(extractedRecordDate).toEqual(model.RecordDate);
 
-        var extractedRecordedBy = bloodPressureFhirResource.performer[0].reference.split('/')[1];
-        expect(extractedRecordedBy).toEqual(model.RecordedBy);
+        var extractedRecordedByEhirId = bloodPressureFhirResource.performer[0].reference.split('/')[1];
+        expect(extractedRecordedByEhirId).toEqual(model.RecordedByEhirId);
 
         var extractedBloodPressureSystolic = bloodPressureFhirResource.component[0].valueQuantity.value;
         expect(extractedBloodPressureSystolic).toEqual(model.BloodPressureSystolic);

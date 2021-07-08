@@ -73,36 +73,49 @@ export class GcpBloodPressureStore implements IBloodPressureStore {
             component: []
         }
 
-        if (model.PatientId != null) {
+        if (model.PatientEhirId != null) {
             resource['subject'] = {
-                reference: `Patient/${model.PatientId}`
+                reference: `Patient/${model.PatientEhirId}`
             }
         }
 
-        /*if (model.VisitId != null) {
-            resource['VisitId'] = model.VisitId
+        /*if (model.VisitEhirId != null) {
+            resource['VisitId'] = model.VisitEhirId
         }*/
 
         if (model.RecordDate != null) {
             resource['effectiveDateTime'] = Helper.formatDate(model.RecordDate)
         }
 
-        if (model.RecordedBy != null) {
+        if (model.RecordedByEhirId != null) {
             resource['performer'] = [
                 {
-                    reference: `Practitioner/${model.RecordedBy}`
+                    reference: `Practitioner/${model.RecordedByEhirId}`
                 }
             ]
         }
 
         if (model.BloodPressureSystolic != null) {
             resource.component.push({
-                code: {
-                    coding: [{
-                        code: "bp-s",
-                        display: "Systolic Blood pressure"
-                    }]
-                },
+                "code": {
+                    "coding": [
+                      {
+                        "system": "http://loinc.org",
+                        "code": "8480-6",
+                        "display": "Systolic blood pressure"
+                      },
+                      {
+                        "system": "http://snomed.info/sct",
+                        "code": "271649006",
+                        "display": "Systolic blood pressure"
+                      },
+                      {
+                        "system": "http://acme.org/devices/clinical-codes",
+                        "code": "bp-s",
+                        "display": "Systolic Blood pressure"
+                      }
+                    ]
+                  },
                 valueQuantity: {
                     value: model.BloodPressureSystolic,
                     system: "http://unitsofmeasure.org",
@@ -114,12 +127,15 @@ export class GcpBloodPressureStore implements IBloodPressureStore {
 
         if (model.BloodPressureDiastolic != null) {
             resource.component.push({
-                code: {
-                    coding: [{
-                        code: "8462-4",
-                        display: "Diastolic blood pressure"
-                    }]
-                },
+                "code": {
+                    "coding": [
+                      {
+                        "system": "http://loinc.org",
+                        "code": "8462-4",
+                        "display": "Diastolic blood pressure"
+                      }
+                    ]
+                  },
                 valueQuantity: {
                     value: model.BloodPressureDiastolic,
                     unit: "mmHg",

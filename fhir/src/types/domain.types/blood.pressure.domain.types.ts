@@ -2,21 +2,22 @@
 
 export interface BloodPressureDomainModel {
     id?: string;
-    PatientId?: string;
-    UserId?: string;
+    PatientUserId?: string;
+    PatientEhirId?: string;
     VisitId?: string;
+    VisitEhirId?: string;
     Unit?: string;
     RecordedBy?: string;
+    RecordedByEhirId?: string;
     RecordDate?:Date;
-    BloodPressureSystolic?: Number;
-    BloodPressureDiastolic?: Number;
-
-};
+    BloodPressureSystolic?: number;
+    BloodPressureDiastolic?: number;
+    };
 
 //#endregion
 
 export interface BloodPressureSearchFilters {
-    PatientId: string,
+    PatientUserId: string,
     VisitId: string;
     RecordDate: string;
 };

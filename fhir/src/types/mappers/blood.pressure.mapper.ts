@@ -10,16 +10,19 @@ export class BloodPressureMapper {
         var bloodPressureObj = Helper.readJsonResource('blood.pressure.domain.model.json');
 
         var model: BloodPressureDomainModel = {
-            PatientId: bloodPressureObj.PatientId,
-            Unit: bloodPressureObj.Unit,
+            PatientUserId: bloodPressureObj.PatientUserId,
+            PatientEhirId: bloodPressureObj.PatientEhirId, 
             VisitId: bloodPressureObj.VisitId,
-            RecordDate: bloodPressureObj.RecordDate,
+            VisitEhirId: bloodPressureObj.VisitEhirId,
+            Unit: bloodPressureObj.Unit,
             RecordedBy: bloodPressureObj.RecordedBy,
+            RecordedByEhirId: bloodPressureObj.RecordedByEhirId,
+            RecordDate: bloodPressureObj.RecordDate, 
             BloodPressureSystolic: bloodPressureObj.BloodPressureSystolic,
             BloodPressureDiastolic: bloodPressureObj.BloodPressureDiastolic,
         }
 
         return model;
     }
-    
+
 }
