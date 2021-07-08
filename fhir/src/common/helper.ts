@@ -163,7 +163,7 @@ export class Helper {
         return val;
     }
 
-    static checkObj(val:any): object {
+    static checkObj(val:any): any {
         if(val === null || typeof(val) === 'undefined' || typeof(val) !== 'object') {
             return null;
         }
@@ -188,4 +188,5 @@ export class Helper {
         const obj = JSON.parse(rawdata);
         return obj;
     }
+
 }
