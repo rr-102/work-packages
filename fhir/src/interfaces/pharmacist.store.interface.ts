@@ -4,7 +4,7 @@ import { PharmacistDomainModel, PharmacistSearchFilters } from '../types/domain.
 ////////////////////////////////////////////////////////////////////////////////////
 
 export interface IPharmacistStore {
-    create(PharmacistDomainModel: PharmacistDomainModel): Promise<any>;
+    create(pharmacistDomainModel: PharmacistDomainModel): Promise<any>;
     search(filter: PharmacistSearchFilters): Promise<any>;
     getById(id: string): Promise<any>;
     update(id: string, updates: PharmacistDomainModel): Promise<any>;
