@@ -12,7 +12,14 @@ export interface PharmacistDomainModel {
     EhrId?: string;
     NationalHealthId?:string;
     MedicalProfileId?: string;
-
+    EstablishmentName?: string;
+    Qualification?: string;
+    Specialties?: string;
+    AboutMe?: string;
+    ProfessionalHighlights?: string;
+    PracticingSince?: string;
+    Locality?: string;
+    //Organizations?: OrganizationDomainModel[];
     DisplayName?: string;
     FirstName?: string;
     MiddleName?: string;
@@ -26,9 +33,6 @@ export interface PharmacistDomainModel {
     ImageResourceId?:string;
     DefaultTimeZone?:string;
     CurrentTimeZone?:string;
-        
-    InsuranceIds?: string[];
-    EmergencyContactIds?: string[];
 
     Address?: AddressDomainModel;
 };
