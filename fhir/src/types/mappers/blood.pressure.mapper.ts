@@ -11,12 +11,12 @@ export class BloodPressureMapper {
 
         var model: BloodPressureDomainModel = {
             PatientUserId: bloodPressureObj.PatientUserId,
-            PatientEhirId: bloodPressureObj.PatientEhirId, 
+            PatientEhrId: bloodPressureObj.PatientEhrId, 
             VisitId: bloodPressureObj.VisitId,
-            VisitEhirId: bloodPressureObj.VisitEhirId,
+            VisitEhrId: bloodPressureObj.VisitEhrId,
             Unit: bloodPressureObj.Unit,
             RecordedBy: bloodPressureObj.RecordedBy,
-            RecordedByEhirId: bloodPressureObj.RecordedByEhirId,
+            RecordedByEhrId: bloodPressureObj.RecordedByEhrId,
             RecordDate: bloodPressureObj.RecordDate, 
             BloodPressureSystolic: bloodPressureObj.BloodPressureSystolic,
             BloodPressureDiastolic: bloodPressureObj.BloodPressureDiastolic,
