@@ -175,7 +175,7 @@ export class GcpPharmacistStore implements IPharmacistStore {
 
     private updatePharmacistFhirResource(updates: PharmacistDomainModel, existingResource: any): any {
 
-        existingResource.resourceType = "Pharmacist";
+        existingResource.resourceType = "Practitioner";
 
         if (existingResource.name.length == 0) {
             existingResource.name = this.getPharmacistFhirName(updates);
