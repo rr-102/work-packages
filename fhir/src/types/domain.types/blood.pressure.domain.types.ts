@@ -3,12 +3,12 @@
 export interface BloodPressureDomainModel {
     id?: string;
     PatientUserId?: string;
-    PatientEhirId?: string;
+    PatientEhrId?: string;
     VisitId?: string;
-    VisitEhirId?: string;
+    VisitEhrId?: string;
     Unit?: string;
     RecordedBy?: string;
-    RecordedByEhirId?: string;
+    RecordedByEhrId?: string;
     RecordDate?:Date;
     BloodPressureSystolic?: number;
     BloodPressureDiastolic?: number;

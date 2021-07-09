@@ -73,24 +73,24 @@ export class GcpBloodPressureStore implements IBloodPressureStore {
             component: []
         }
 
-        if (model.PatientEhirId != null) {
+        if (model.PatientEhrId != null) {
             resource['subject'] = {
-                reference: `Patient/${model.PatientEhirId}`
+                reference: `Patient/${model.PatientEhrId}`
             }
         }
 
         /*if (model.VisitEhirId != null) {
-            resource['VisitId'] = model.VisitEhirId
+            resource['VisitId'] = model.VisitEhrId
         }*/
 
         if (model.RecordDate != null) {
             resource['effectiveDateTime'] = Helper.formatDate(model.RecordDate)
         }
 
-        if (model.RecordedByEhirId != null) {
+        if (model.RecordedByEhrId != null) {
             resource['performer'] = [
                 {
-                    reference: `Practitioner/${model.RecordedByEhirId}`
+                    reference: `Practitioner/${model.RecordedByEhrId}`
                 }
             ]
         }
