@@ -14,8 +14,8 @@ import { DoctorMapper } from "./types/mappers/doctor.mapper";
 export class Runner {
 
     public static async run() {
-        await Runner.runPatientResourceWorkflows();
-        await Runner.runDoctorResourceWorkflows();
+        //await Runner.runPatientResourceWorkflows();
+        //await Runner.runDoctorResourceWorkflows();
         await Runner.runBloodPressureResourceWorkflows();
         
     }
@@ -56,10 +56,23 @@ export class Runner {
 
     private static async runBloodPressureResourceWorkflows() {
         var model = BloodPressureMapper.convertJsonObjectToDomainModel();
-        var bloodPressureFhirId = await Loader.BloodPressureStore.add(model);
-        var bloodPressureFhirResource = await Loader.BloodPressureStore.getById(bloodPressureFhirId);
-        var bloodPressureResourceStr = JSON.stringify(bloodPressureFhirResource, null, 2);
+        var bloodPressureEhrId = await Loader.BloodPressureStore.add(model);
+        var bloodPressureEhrResource = await Loader.BloodPressureStore.getById(bloodPressureEhrId);
+        var bloodPressureResourceStr = JSON.stringify(bloodPressureEhrResource, null, 2);
         console.log(bloodPressureResourceStr);
+
+        model.BloodPressureSystolic = 85;
+        model.BloodPressureDiastolic = 125;
+        
+        var updatedResource = await Loader.BloodPressureStore.update(bloodPressureEhrId, model);
+        bloodPressureResourceStr = JSON.stringify(updatedResource, null, 2);
+        console.log(bloodPressureResourceStr);
+
+        await Loader.BloodPressureStore.delete(bloodPressureEhrId);
+        var existing = await Loader.BloodPressureStore.getById(bloodPressureEhrId);
+        bloodPressureResourceStr = JSON.stringify(existing, null, 2);
+        console.log(bloodPressureResourceStr);
+
     }
 
 }
