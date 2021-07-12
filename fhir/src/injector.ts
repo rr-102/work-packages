@@ -7,6 +7,7 @@ import { GcpDiagnosticLabUserStore } from "./providers/gcp/diagnostic.lab.user.s
 import { GcpDoctorStore } from './providers/gcp/doctor.store';
 import { GcpPharmacistStore } from './providers/gcp/pharmacist.store';
 import { GcpBloodPressureStore } from "./providers/gcp/blood.pressure.store";
+import { GcpTemperatureStore } from "./providers/gcp/temperature.store";
 //import { GcpDoctorVisitStore } from "./providers/gcp/doctor.visit.store";
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -21,6 +22,7 @@ export class Injector {
         container.register('IDoctorStore', GcpDoctorStore);
         container.register('IPharmacistStore', GcpPharmacistStore);
         container.register('IBloodPressureStore', GcpBloodPressureStore);
+        container.register('ITemperatureStore', GcpTemperatureStore);
 
         //container.register('IDoctorVisitStore', GcpDoctorVisitStore);
 

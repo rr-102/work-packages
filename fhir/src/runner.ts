@@ -7,6 +7,7 @@ import { PatientMapper } from "./types/mappers/patient.mapper";
 import { DiagnosticLabUserMapper } from "./types/mappers/diagnostic.lab.user.mapper";
 import { BloodPressureMapper } from "./types/mappers/blood.pressure.mapper";
 import { DoctorMapper } from "./types/mappers/doctor.mapper";
+import { TemperatureMapper } from "./types/mappers/temperature.mapper";
 
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -16,7 +17,8 @@ export class Runner {
     public static async run() {
         //await Runner.runPatientResourceWorkflows();
         //await Runner.runDoctorResourceWorkflows();
-        await Runner.runBloodPressureResourceWorkflows();
+        //await Runner.runBloodPressureResourceWorkflows();
+        await Runner.runTemperatureResourceWorkflows();
         
     }
 
@@ -72,6 +74,25 @@ export class Runner {
         var existing = await Loader.BloodPressureStore.getById(bloodPressureEhrId);
         bloodPressureResourceStr = JSON.stringify(existing, null, 2);
         console.log(bloodPressureResourceStr);
+
+    }
+
+    private static async runTemperatureResourceWorkflows() {
+        var model = TemperatureMapper.convertJsonObjectToDomainModel();
+        var temperatureEhrId = await Loader.TemperatureStore.add(model);
+        var temperatureEhrResource = await Loader.TemperatureStore.getById(temperatureEhrId);
+        var temperatureResourceStr = JSON.stringify(temperatureEhrResource, null, 2);
+        console.log(temperatureResourceStr);
+
+        
+        var updatedResource = await Loader.TemperatureStore.update(temperatureEhrId, model);
+        temperatureResourceStr = JSON.stringify(updatedResource, null, 2);
+        console.log(temperatureResourceStr);
+
+        await Loader.TemperatureStore.delete(temperatureEhrId);
+        var existing = await Loader.TemperatureStore.getById(temperatureEhrId);
+        temperatureResourceStr = JSON.stringify(existing, null, 2);
+        console.log(temperatureResourceStr);
 
     }
 
