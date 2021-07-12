@@ -2,6 +2,7 @@ import { Helper } from '../../common/helper';
 import { BloodPressureDomainModel } from '../../types/domain.types/blood.pressure.domain.types';
 import { IBloodPressureStore } from '../../interfaces/blood.pressure.store.interface';
 import { GcpHelper } from './helper.gcp';
+import { healthcare_v1 } from 'googleapis';
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -41,16 +42,61 @@ export class GcpBloodPressureStore implements IBloodPressureStore {
             //console.log(`Created FHIR resource ${resourceStr}`);
             return data;
         } catch (error) {
-            console.log(error.message);
-            throw error;
+            var errorMessage = Helper.checkObj(error.message);
+           if (errorMessage != null) {
+               if (errorMessage.hasOwnProperty('issue')) {
+                   var issue = errorMessage.issue[0];
+                   console.log(issue.diagnostics);
+                   return null;
+               }
+           }
+           console.log(error.message);
         }
     };
     
     search = async (filter: any): Promise<any> => {};
 
-    update = async (updates: any): Promise<any> => {};
+    update = async (resourceId:string, updates: BloodPressureDomainModel): Promise<any> => {
 
-    delete = async (id: string): Promise<any> => {};
+        var g = await GcpHelper.getGcpClient();
+        const c = GcpHelper.getGcpFhirConfig();
+        const resourceType = 'Observation';
+
+        //Get the existing resource
+        const parent = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}/fhirStores/${c.FhirStoreId}/fhir/${resourceType}/${resourceId}`;
+        var existingResource = await g.projects.locations.datasets.fhirStores.fhir.read(
+            { name: parent }
+        );
+        var data:any = existingResource.data;
+
+        //Construct updated body
+        const body: healthcare_v1.Schema$HttpBody = this.updateBloodPressureFhirResource(updates, data);
+        const updatedResource = await g.projects.locations.datasets.fhirStores.fhir.update({
+            name: parent,
+            requestBody: body,
+        });
+        var data: any = updatedResource.data;
+        console.log(`Updated ${resourceType} resource:\n`, updatedResource.data);
+        return data;
+    };
+
+    delete = async (resourceId: string): Promise<any> => {
+        try {
+        var g = await GcpHelper.getGcpClient();
+        const c = GcpHelper.getGcpFhirConfig();
+        const resourceType = 'Observation';
+
+        //Get the existing resource
+        const parent = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}/fhirStores/${c.FhirStoreId}/fhir/${resourceType}/${resourceId}`;
+        await g.projects.locations.datasets.fhirStores.fhir.delete(
+            { name: parent }
+        );
+    }
+    catch (error) {
+        console.log("Error:: ", JSON.stringify(error));
+        throw error;
+    }
+    };
 
      //#region Private methods
 
@@ -147,5 +193,43 @@ export class GcpBloodPressureStore implements IBloodPressureStore {
         
         return resource;
     }  
+    
+    private updateBloodPressureFhirResource(updates: BloodPressureDomainModel, existingResource: any): any {
+
+        existingResource.resourceType = "Observation";
+
+        if (updates.PatientEhrId != null) {
+            existingResource['subject'] = {
+                reference: `Patient/${updates.PatientEhrId}`
+            }
+        }
+
+        /*if (updates.VisitEhirId != null) {
+            existingResource['VisitId'] = updates.VisitEhrId
+        }*/
+
+        if (updates.RecordDate != null) {
+            existingResource['effectiveDateTime'] = Helper.formatDate(updates.RecordDate)
+        }
+
+        if (updates.RecordedByEhrId != null) {
+            existingResource['performer'] = [
+                {
+                    reference: `Practitioner/${updates.RecordedByEhrId}`
+                }
+            ]
+        }
+
+        if (updates.BloodPressureSystolic != null) {
+            existingResource.component[0].valueQuantity.value = updates.BloodPressureSystolic
+        }
+
+        if (updates.BloodPressureDiastolic != null) {
+            existingResource.component[1].valueQuantity.value = updates.BloodPressureDiastolic
+        }
         
+        return existingResource;
+    }
+
+
 }
