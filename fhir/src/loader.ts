@@ -6,6 +6,7 @@ import { DiagnosticLabUserStore } from './services/diagnostic.lab.user.store';
 import { DoctorStore } from './services/doctor.store';
 import { PharmacistStore } from './services/pharmacist.store';
 import { BloodPressureStore } from './services/blood.pressure.store';
+import { PulseStore } from './services/pulse.store';
 
 //import { DoctorVisitStore } from './services/doctor.visit.store';
 import { Injector } from './injector';
@@ -24,6 +25,7 @@ export class Loader {
     private static _doctorStore: DoctorStore = container.resolve(DoctorStore);
     private static _pharmacistStore: PharmacistStore = container.resolve(PharmacistStore);
     private static _bloodPressureStore: BloodPressureStore = container.resolve(BloodPressureStore);
+    private static _pulseStore: PulseStore = container.resolve(PulseStore);
 
     private static _container: DependencyContainer = container;
 
@@ -54,6 +56,10 @@ export class Loader {
         return Loader._bloodPressureStore;
     }
 
+    public static get PulseStore() {
+        return Loader._pulseStore;
+    }
+
     // public static get DoctorVisitStore() {
     //     return Loader._doctorVisitStore;
     // }
@@ -75,6 +81,8 @@ export class Loader {
             Loader._doctorStore = container.resolve(DoctorStore);
 
             Loader._pharmacistStore = container.resolve(PharmacistStore);
+
+            Loader._pulseStore = container.resolve(PulseStore);
 
             //Finally intitialize Fhir storage provider 
             await Loader._storageService.init();

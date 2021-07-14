@@ -7,6 +7,7 @@ import { PatientMapper } from "./types/mappers/patient.mapper";
 import { DiagnosticLabUserMapper } from "./types/mappers/diagnostic.lab.user.mapper";
 import { BloodPressureMapper } from "./types/mappers/blood.pressure.mapper";
 import { DoctorMapper } from "./types/mappers/doctor.mapper";
+import { PulseMapper } from "./types/mappers/pulse.mapper";
 
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -16,7 +17,8 @@ export class Runner {
     public static async run() {
         //await Runner.runPatientResourceWorkflows();
         //await Runner.runDoctorResourceWorkflows();
-        await Runner.runBloodPressureResourceWorkflows();
+        //await Runner.runBloodPressureResourceWorkflows();
+        await Runner.runPulseResourceWorkflows();
         
     }
 
@@ -72,6 +74,25 @@ export class Runner {
         var existing = await Loader.BloodPressureStore.getById(bloodPressureEhrId);
         bloodPressureResourceStr = JSON.stringify(existing, null, 2);
         console.log(bloodPressureResourceStr);
+
+    }
+
+    private static async runPulseResourceWorkflows() {
+        var model = PulseMapper.convertJsonObjectToDomainModel();
+        var pulseEhrId = await Loader.PulseStore.add(model);
+        var pulseEhrResource = await Loader.PulseStore.getById(pulseEhrId);
+        var pulseResourceStr = JSON.stringify(pulseEhrResource, null, 2);
+        console.log(pulseResourceStr);
+
+        
+        var updatedResource = await Loader.PulseStore.update(pulseEhrId, model);
+        pulseResourceStr = JSON.stringify(updatedResource, null, 2);
+        console.log(pulseResourceStr);
+
+        await Loader.PulseStore.delete(pulseEhrId);
+        var existing = await Loader.PulseStore.getById(pulseEhrId);
+        pulseResourceStr = JSON.stringify(existing, null, 2);
+        console.log(pulseResourceStr);
 
     }
 
