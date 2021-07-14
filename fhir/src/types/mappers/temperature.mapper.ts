@@ -17,7 +17,8 @@ export class TemperatureMapper {
             Unit: temperatureObj.Unit,
             RecordedBy: temperatureObj.RecordedBy,
             RecordedByEhrId: temperatureObj.RecordedByEhrId,
-            RecordDate: temperatureObj.RecordDate, 
+            RecordDate: temperatureObj.RecordDate,
+            Temperature: temperatureObj.Temperature, 
         }
 
         return model;

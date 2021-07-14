@@ -9,7 +9,8 @@ export interface TemperatureDomainModel {
     Unit?: string;
     RecordedBy?: string;
     RecordedByEhrId?: string;
-    RecordDate?:Date;
+    RecordDate?: Date;
+    Temperature?: number;
     };
 
 //#endregion
