@@ -18,6 +18,7 @@ export class PulseMapper {
             RecordedBy: pulseObj.RecordedBy,
             RecordedByEhrId: pulseObj.RecordedByEhrId,
             RecordDate: pulseObj.RecordDate, 
+            Pulse: pulseObj.Pulse
         }
 
         return model;
