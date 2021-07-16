@@ -104,19 +104,24 @@ export class GcpTemperatureStore implements ITemperatureStore {
 
         var resource = {
             resourceType : "Observation",
-            id: "blood-pressure",
+            id: "temperature",
             status: "final",
             code: {
                 coding: [
                   {
-                    system: "http://loinc.org",
-                    code: "85354-9",
-                    display: "Blood pressure panel with all children optional"
+                    system: "http://terminology.hl7.org/CodeSystem/observation-category",
+                    code: "vital-signs",
+                    display: "vital signs"
                   }
-                ],
-                text: "Blood pressure systolic & diastolic"
+                ]
             },
-            component: []
+            component: [],
+            valueQuantity: {
+                "value": 99,
+                "unit": "°F",
+                "system": "http://unitsofmeasure.org",
+                "code": "Farenheit"
+              }, 
         }
 
         if (model.PatientEhrId != null) {

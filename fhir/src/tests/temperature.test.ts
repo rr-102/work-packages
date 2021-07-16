@@ -26,7 +26,7 @@ describe('Observation resource: Storage, retrieval', () => {
         var extractedPatientEhrId = temperatureFhirResource.subject.reference.split('/')[1];
         expect(extractedPatientEhrId).toEqual(model.PatientEhrId);
 
-        var extractedUnit = temperatureFhirResource.component[0].valueQuantity.unit;
+        var extractedUnit = temperatureFhirResource.valueQuantity.unit;
         expect(extractedUnit).toEqual(model.Unit);
 
         var extractedRecordDate = temperatureFhirResource.effectiveDateTime;

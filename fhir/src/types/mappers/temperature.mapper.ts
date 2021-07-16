@@ -7,7 +7,7 @@ export class TemperatureMapper {
 
     public static convertJsonObjectToDomainModel = () => {
 
-        var temperatureObj = Helper.readJsonResource('temperature.domain.model.json');
+        var temperatureObj = Helper.readJsonResource('biometrics.temperature.domain.model.json');
 
         var model: TemperatureDomainModel = {
             PatientUserId: temperatureObj.PatientUserId,

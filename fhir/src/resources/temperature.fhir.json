@@ -1,6 +1,6 @@
 {
     "resourceType": "Observation",
-    "id": "f202",
+    "id": "temperature",
     "status": "final",
     "category": [
         {
@@ -49,10 +49,10 @@
     }
   ],
   "valueQuantity": {
-    "value": 39,
-    "unit": "degrees C",
+    "value": 99,
+    "unit": "°F",
     "system": "http://unitsofmeasure.org",
-    "code": "Cel"
+    "code": "Farenheit"
   },
   "interpretation": [
     {
@@ -86,7 +86,7 @@
     {
       "high": {
         "value": 38.2,
-        "unit": "degrees C"
+        "unit": "°F"
       }
     }
   ]
