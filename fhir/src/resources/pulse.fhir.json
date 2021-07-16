@@ -35,7 +35,7 @@
     "effectiveDateTime": "1999-07-02",
     "valueQuantity": {
       "value": 44,
-      "unit": "beats/minute",
+      "unit": "bpm",
       "system": "http://unitsofmeasure.org",
       "code": "/min"
     }

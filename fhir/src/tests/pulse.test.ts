@@ -26,7 +26,7 @@ describe('Observation resource: Storage, retrieval', () => {
         var extractedPatientEhrId = pulseFhirResource.subject.reference.split('/')[1];
         expect(extractedPatientEhrId).toEqual(model.PatientEhrId);
 
-        var extractedUnit = pulseFhirResource.component[0].valueQuantity.unit;
+        var extractedUnit = pulseFhirResource.valueQuantity.unit;
         expect(extractedUnit).toEqual(model.Unit);
 
         var extractedRecordDate = pulseFhirResource.effectiveDateTime;

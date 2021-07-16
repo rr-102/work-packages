@@ -7,7 +7,7 @@ export class PulseMapper {
 
     public static convertJsonObjectToDomainModel = () => {
 
-        var pulseObj = Helper.readJsonResource('pulse.domain.model.json');
+        var pulseObj = Helper.readJsonResource('biometrics.pulse.domain.model.json');
 
         var model: PulseDomainModel = {
             PatientUserId: pulseObj.PatientUserId,

@@ -116,7 +116,13 @@ export class GcpPulseStore implements IPulseStore {
                 ],
                 text: "Blood pressure systolic & diastolic"
             },
-            component: []
+            component: [],
+            valueQuantity: {
+                "value": 44,
+                "unit": "bpm",
+                "system": "http://unitsofmeasure.org",
+                "code": "/min"
+              }
         }
 
         if (model.PatientEhrId != null) {

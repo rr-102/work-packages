@@ -11,7 +11,7 @@ export interface PulseDomainModel {
     RecordedByEhrId?: string;
     RecordDate?: Date;
     Pulse?: number;
-    };
+};
 
 //#endregion
 
