@@ -14,7 +14,7 @@ export class GcpPharmacistStore implements IPharmacistStore {
             const c = GcpHelper.getGcpFhirConfig();
             var body = this.createPharmacistFhirResource(model);
             const parent = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}/fhirStores/${c.FhirStoreId}`;
-            const request = { parent, type: 'Pharmacist', requestBody: body };
+            const request = { parent, type: 'Practitioner', requestBody: body };
             const resource = await g.projects.locations.datasets.fhirStores.fhir.create(
                 request
             );
@@ -32,7 +32,7 @@ export class GcpPharmacistStore implements IPharmacistStore {
         try {
             var g = await GcpHelper.getGcpClient();
             const c = GcpHelper.getGcpFhirConfig();
-            const resourceType = 'Pharmacist';
+            const resourceType = 'Practitioner';
             const parent = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}/fhirStores/${c.FhirStoreId}/fhir/${resourceType}/${resourceId}`;
             const resource = await g.projects.locations.datasets.fhirStores.fhir.read(
                 { name: parent }
@@ -63,7 +63,7 @@ export class GcpPharmacistStore implements IPharmacistStore {
 
         var g = await GcpHelper.getGcpClient();
         const c = GcpHelper.getGcpFhirConfig();
-        const resourceType = 'Pharmacist';
+        const resourceType = 'Practitioner';
 
         //Get the existing resource
         const parent = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}/fhirStores/${c.FhirStoreId}/fhir/${resourceType}/${resourceId}`;
@@ -87,7 +87,7 @@ export class GcpPharmacistStore implements IPharmacistStore {
     delete = async (resourceId: string): Promise<any> => {
         var g = await GcpHelper.getGcpClient();
         const c = GcpHelper.getGcpFhirConfig();
-        const resourceType = 'Pharmacist';
+        const resourceType = 'Practitioner';
 
         //Get the existing resource
         const parent = `projects/${c.ProjectId}/locations/${c.CloudRegion}/datasets/${c.DatasetId}/fhirStores/${c.FhirStoreId}/fhir/${resourceType}/${resourceId}`;
@@ -103,7 +103,7 @@ export class GcpPharmacistStore implements IPharmacistStore {
         var nameObj = this.getPharmacistFhirName(model);
 
         var resource = {
-            resourceType : "Pharmacist",
+            resourceType : "Practitioner",
             name: [nameObj],
             gender: model.Gender != null ? model.Gender.toLowerCase() : 'unknown',
             telecom: [],

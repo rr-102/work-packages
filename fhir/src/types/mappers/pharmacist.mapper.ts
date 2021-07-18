@@ -11,7 +11,7 @@ export class PharmacistMapper {
 
     public static convertJsonObjectToDomainModel = () => {
 
-        var PharmacistObj = Helper.readJsonResource('pharmacist.domain.model.json');
+        var PharmacistObj = Helper.readJsonResource('pharmacy.user.model.json');
 
         var address: AddressDomainModel = {
             Type: PharmacistObj.Address.Type != null ? PharmacistObj.Address.Type.toLowerCase() : 'official',
